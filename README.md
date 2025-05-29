@@ -42,6 +42,7 @@ docker exec -it ${PROJECT_NAME}_web python manage.py createsuperuser
 <br>
 
 <h3>Эндпоинты:</h3>
-* <b>Начисление баланса (POST):</b> http://127.0.0.1:8000/api/v1/webhook/bank/
-* <b>Получение баланса организации (GET):</b> http://127.0.0.1:8000/api/v1/organizations/{inn}/balance/
-
+<ol>
+<li><b>Начисление баланса (POST):</b> http://127.0.0.1:8000/api/v1/webhook/bank/</li>
+<li><b>Получение баланса организации (GET):</b> http://127.0.0.1:8000/api/v1/organizations/{inn}/balance/</li>
+</ol>

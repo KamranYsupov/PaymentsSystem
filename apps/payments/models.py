@@ -18,6 +18,9 @@ class Organization(models.Model):
         default=0
     )
 
+    def __str__(self):
+        return f'Организация: {self.inn}'
+
 
 class Payment(models.Model):
     """Модель платежа"""

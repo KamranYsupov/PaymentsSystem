@@ -1,0 +1,60 @@
+version: '3.8'
+
+x-function: &base_python
+  volumes:
+    - ./:/:rw
+    - poetry-volume:/poetry:delegated
+  environment: &env-vars
+    POETRY_HOME: /poetry
+    SECRET_KEY: ${SECRET_KEY}
+    DEBUG: ${DEBUG}
+    DB_HOST: ${DB_HOST}
+    DB_NAME: ${DB_NAME}
+    DB_USER: ${DB_USER}
+    DB_PASS: ${DB_PASSWORD}
+    DB_ROOT_PASS: ${DB_ROOT_PASSWORD}
+  depends_on:
+    - db
+  env_file:
+    - .env
+  networks:
+    - internal
+
+services:
+  db:
+    container_name: ${PROJECT_NAME}_db
+    image: mysql:8.0
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - internal
+    env_file:
+      .env
+
+  web:
+    <<: *base_python
+    container_name: ${PROJECT_NAME}_web
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_dir:/static/
+      - media_dir:/media/
+
+volumes:
+  db_data:
+  static_dir:
+  media_dir:
+
+
+networks:
+  internal:
